@@ -1,7 +1,7 @@
 # NeverZen
 NEVERLOSE + GameSense
 ```lua
-local neverwin = require(script:WaitForChild('ModuleScript'));
+local neverwin = loadstring(game:HttpGet("https://raw.githubusercontent.com/3345-c-a-t-s-u-s/NeverZen/refs/heads/main/src/init.luau"))();
 local notifi = neverwin:CreateNotifier();
 
 local window = neverwin.new({
