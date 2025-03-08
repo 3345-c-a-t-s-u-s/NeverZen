@@ -1366,8 +1366,9 @@ function NeverZen.new(config)
 	ProfileIcon.BorderSizePixel = 0
 	ProfileIcon.Position = UDim2.new(0, 5, 1.3, 0)
 	ProfileIcon.Size = UDim2.new(0, 35, 0, 35)
-	ProfileIcon.Image = Services.Players:GetUserThumbnailAsync(LocalPlayer.UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size150x150)
-	
+	pcall(function()
+		ProfileIcon.Image = Services.Players:GetUserThumbnailAsync(LocalPlayer.UserId,Enum.ThumbnailType.HeadShot,Enum.ThumbnailSize.Size150x150)
+	end)
 	task.delay(0.45,function()
 		TweenService:Create(ProfileIcon,TweenInfo.new(1,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 			Position = UDim2.new(0, 5, 0.5, 0)
