@@ -1500,7 +1500,7 @@ function NeverZen.new(config)
 		local UIListLayout = Instance.new("UIListLayout")
 
 		Statusbar.Name = "Statusbar";
-		Statusbar.Parent = NeverZen;
+		Statusbar.Parent = Content;
 		Statusbar.AnchorPoint = Vector2.new(1, 0)
 		Statusbar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		Statusbar.BackgroundTransparency = 1.000
