@@ -38,7 +38,7 @@ local Mouse = LocalPlayer:GetMouse();
 
 NeverZen.ProtectGui = protect_gui or protectgui or (syn and syn.protect_gui) or function() end;
 NeverZen.Services.CoreGui = (gethui and gethui()) or NeverZen.Services.CoreGui or LocalPlayer.PlayerGui;
-NeverZen.MininumTabSize = 600;
+NeverZen.MinimumTabSize = 600;
 
 local Services : Services = NeverZen.Services;
 
@@ -1140,7 +1140,7 @@ function NeverZen.new(config)
 	if config.Shadow then
 		local DropShadow = Instance.new("ImageLabel")
 
-		DropShadow.Name = "DropShadow"
+		DropShadow.Name = NeverZen:RandomString()
 		DropShadow.Parent = WindowFrame
 		DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
 		DropShadow.BackgroundTransparency = 1.000
@@ -1500,7 +1500,7 @@ function NeverZen.new(config)
 		local Statusbar = Instance.new("Frame")
 		local UIListLayout = Instance.new("UIListLayout")
 
-		Statusbar.Name = "Statusbar";
+		Statusbar.Name = NeverZen:RandomString();
 		Statusbar.Parent = Content;
 		Statusbar.AnchorPoint = Vector2.new(1, 0)
 		Statusbar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1531,7 +1531,7 @@ function NeverZen.new(config)
 				UICorner.CornerRadius = UDim.new(0, 4)
 				UICorner.Parent = Frame
 
-				Label.Name = "Label"
+				Label.Name = NeverZen:RandomString()
 				Label.Parent = Frame
 				Label.AnchorPoint = Vector2.new(0.5, 0.5)
 				Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1566,7 +1566,7 @@ function NeverZen.new(config)
 	function WindowSignal:AddLabel(name)
 		local TBSTitle = Instance.new("TextLabel")
 
-		TBSTitle.Name = "TBSTitle"
+		TBSTitle.Name = NeverZen:RandomString()
 		TBSTitle.Parent = TBSFrame
 		TBSTitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		TBSTitle.BackgroundTransparency = 1.000
@@ -1594,14 +1594,15 @@ function NeverZen.new(config)
 		config = config or {};
 		config.Name = config.Name or 'Example';
 		config.Icon = config.Icon or "target";
-
+		config.SingleMode = config.SingleMode or false;
+		
 		local TabSignal = {};
 		local TabButton = Instance.new("Frame")
 		local UICorner = Instance.new("UICorner")
 		local TabIcon = Instance.new("ImageLabel")
 		local TabName = Instance.new("TextLabel")
 
-		TabButton.Name = "TabButton"
+		TabButton.Name = NeverZen:RandomString()
 		TabButton.Parent = TBSFrame
 		TabButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 		TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1612,7 +1613,7 @@ function NeverZen.new(config)
 		UICorner.CornerRadius = UDim.new(0, 4)
 		UICorner.Parent = TabButton
 
-		TabIcon.Name = "TabIcon"
+		TabIcon.Name = NeverZen:RandomString()
 		TabIcon.Parent = TabButton
 		TabIcon.AnchorPoint = Vector2.new(0, 0.5)
 		TabIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1625,7 +1626,7 @@ function NeverZen.new(config)
 		TabIcon.Image = NeverZen:GetIcon(config.Icon);
 		TabIcon.ImageTransparency = 1
 
-		TabName.Name = "TabName"
+		TabName.Name = NeverZen:RandomString()
 		TabName.Parent = TabButton
 		TabName.AnchorPoint = Vector2.new(0, 0.5)
 		TabName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1652,8 +1653,8 @@ function NeverZen.new(config)
 		local UIListLayout_2 = Instance.new("UIListLayout")
 		local CTFrame = Instance.new("ScrollingFrame")
 		local UIListLayoutAF = Instance.new("UIListLayout")
-		
-		TabFrame.Name = "TabFrame"
+
+		TabFrame.Name = NeverZen:RandomString()
 		TabFrame.Parent = TabWin
 		TabFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 		TabFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1664,8 +1665,8 @@ function NeverZen.new(config)
 		TabFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 		TabFrame.Size = UDim2.new(1, -2, 1, -2)
 		TabFrame.ZIndex = 4
-		
-		CTFrame.Name = "CTFrame"
+
+		CTFrame.Name = NeverZen:RandomString()
 		CTFrame.Parent = TabFrame
 		CTFrame.Active = true
 		CTFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -1685,9 +1686,9 @@ function NeverZen.new(config)
 		UIListLayoutAF.HorizontalAlignment = Enum.HorizontalAlignment.Center
 		UIListLayoutAF.SortOrder = Enum.SortOrder.LayoutOrder
 		UIListLayoutAF.Padding = UDim.new(0, 2)
-		
-		
-		LeftFrame.Name = "LeftFrame"
+
+
+		LeftFrame.Name = NeverZen:RandomString()
 		LeftFrame.Parent = CTFrame
 		LeftFrame.Active = true
 		LeftFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -1710,7 +1711,7 @@ function NeverZen.new(config)
 			LeftFrame.CanvasSize = UDim2.fromOffset(0,UIListLayout.AbsoluteContentSize.Y + 5)
 		end)
 
-		RightFrame.Name = "RightFrame"
+		RightFrame.Name = NeverZen:RandomString()
 		RightFrame.Parent = CTFrame
 		RightFrame.Active = true
 		RightFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -1731,18 +1732,27 @@ function NeverZen.new(config)
 		UIListLayout_2:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
 			RightFrame.CanvasSize = UDim2.fromOffset(0,UIListLayout_2.AbsoluteContentSize.Y + 5)
 		end)
-		
+
 		task.spawn(function()
 			while true do task.wait(0.1)
-				if WindowFrame.Size.X.Offset <= NeverZen.MininumTabSize then
+				if WindowSignal.Config.Scale.X.Offset <= NeverZen.MinimumTabSize or config.SingleMode then
 					UIListLayoutAF.FillDirection = Enum.FillDirection.Vertical
 					UIListLayoutAF.HorizontalAlignment = Enum.HorizontalAlignment.Center
 					UIListLayoutAF.SortOrder = Enum.SortOrder.LayoutOrder
 					CTFrame.ScrollingEnabled = true
-					RightFrame.Size = UDim2.new(1,-5,0,UIListLayout_2.AbsoluteContentSize.Y + 2)
-					LeftFrame.Size = UDim2.new(1, -5, 0,UIListLayout.AbsoluteContentSize.Y + 3)
-					UIListLayoutAF.Padding = UDim.new(0, 2)
+			
+					TweenService:Create(RightFrame,TweenInfo.new(0.2),{
+						Size = UDim2.new(1,-5,0,UIListLayout_2.AbsoluteContentSize.Y + 2)
+					}):Play()
 
+					TweenService:Create(LeftFrame,TweenInfo.new(0.2),{
+						Size = UDim2.new(1, -5, 0,UIListLayout.AbsoluteContentSize.Y + 3)
+					}):Play()
+					
+					TweenService:Create(UIListLayoutAF,TweenInfo.new(0.2),{
+						Padding = UDim.new(0, 2)
+					}):Play()
+					
 					RightFrame.ScrollingEnabled = false
 					LeftFrame.ScrollingEnabled = false
 					RightFrame.CanvasPosition = Vector2.new(0,0)
@@ -1750,10 +1760,19 @@ function NeverZen.new(config)
 					CTFrame.CanvasSize = UDim2.fromOffset(0,UIListLayoutAF.AbsoluteContentSize.Y)
 				else
 					CTFrame.CanvasSize = UDim2.fromOffset(0,0)
-					UIListLayoutAF.Padding = UDim.new(0, 5)
-
-					RightFrame.Size = UDim2.new(0.5, -5, 1, -3)
-					LeftFrame.Size = UDim2.new(0.5, -5, 1, -3)
+	
+					TweenService:Create(UIListLayoutAF,TweenInfo.new(0.2),{
+						Padding = UDim.new(0, 5)
+					}):Play()
+					
+					TweenService:Create(RightFrame,TweenInfo.new(0.2),{
+						Size = UDim2.new(0.5, -5, 1, -3)
+					}):Play()
+					
+					TweenService:Create(LeftFrame,TweenInfo.new(0.2),{
+						Size = UDim2.new(0.5, -5, 1, -3)
+					}):Play()
+					
 					CTFrame.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Left
 					UIListLayoutAF.FillDirection = Enum.FillDirection.Horizontal
 					UIListLayoutAF.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -1765,7 +1784,7 @@ function NeverZen.new(config)
 				end;
 			end;
 		end);
-		
+
 		local ToggleFunc = function(value)
 			if value then
 				TabFrame.Visible = true;
@@ -1854,6 +1873,10 @@ function NeverZen.new(config)
 		end)
 
 		NeverZen:NewInput(TabButton,function()
+			if not Content.Enabled or not Content.Parent then
+				return;
+			end;
+			
 			WindowSignal.SelectedTab = TabIden;
 
 			for i,v in next , WindowSignal.Tabs do
@@ -1883,7 +1906,7 @@ function NeverZen.new(config)
 			local Frame = Instance.new("Frame")
 			local UIListLayout = Instance.new("UIListLayout")
 
-			Section.Name = "Section"
+			Section.Name = NeverZen:RandomString()
 			Section.Parent = (string.lower(Config.Position) == "left" and LeftFrame) or RightFrame;
 			Section.BackgroundColor3 = Color3.fromRGB(23, 23, 23)
 			Section.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -1960,7 +1983,7 @@ function NeverZen.new(config)
 					Name = config.Name
 				})
 
-				Toggle.Name = "Toggle"
+				Toggle.Name = NeverZen:RandomString()
 				Toggle.Parent = Section
 				Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Toggle.BackgroundTransparency = 1.000
@@ -2038,6 +2061,10 @@ function NeverZen.new(config)
 				setValue(config.Default);
 
 				NeverZen:NewInput(Toggle,function()
+					if not Content.Enabled or not Content.Parent then
+						return;
+					end;
+					
 					config.Default = not config.Default
 					setValue(config.Default)
 
@@ -2066,7 +2093,7 @@ function NeverZen.new(config)
 					Name = name
 				})
 
-				Label.Name = "Label"
+				Label.Name = NeverZen:RandomString()
 				Label.Parent = Section
 				Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Label.BackgroundTransparency = 1.000
@@ -2107,7 +2134,7 @@ function NeverZen.new(config)
 					Name = config.Name
 				})
 
-				Button.Name = "Button"
+				Button.Name = NeverZen:RandomString()
 				Button.Parent = Section
 				Button.BackgroundColor3 = Color3.fromRGB(31, 31, 31)
 				Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2136,6 +2163,10 @@ function NeverZen.new(config)
 				UIStroke.Parent = Button
 
 				local button = NeverZen:NewInput(Button,function()
+					if not Content.Enabled or not Content.Parent then
+						return;
+					end;
+					
 					config.Callback(config);
 				end)
 
@@ -2188,7 +2219,7 @@ function NeverZen.new(config)
 					Name = config.Name
 				})
 
-				Slider.Name = "Slider"
+				Slider.Name = NeverZen:RandomString()
 				Slider.Parent = Section
 				Slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Slider.BackgroundTransparency = 1.000
@@ -2392,7 +2423,7 @@ function NeverZen.new(config)
 					Name = config.Name
 				})
 
-				Keybind.Name = "Keybind"
+				Keybind.Name = NeverZen:RandomString()
 				Keybind.Parent = Section
 				Keybind.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Keybind.BackgroundTransparency = 1.000
@@ -2458,6 +2489,10 @@ function NeverZen.new(config)
 				local IsBinding = false;
 
 				Button.MouseButton1Click:Connect(function()
+					if not Content.Enabled or not Content.Parent then
+						return;
+					end;
+					
 					if IsBinding then return; end;
 
 					IsBinding = true;
@@ -2551,7 +2586,7 @@ function NeverZen.new(config)
 					Name = config.Name
 				})
 
-				Dropown.Name = "Dropown"
+				Dropown.Name = NeverZen:RandomString()
 				Dropown.Parent = Section
 				Dropown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Dropown.BackgroundTransparency = 1.000
@@ -2559,7 +2594,7 @@ function NeverZen.new(config)
 				Dropown.BorderSizePixel = 0
 				Dropown.Size = UDim2.new(1, -5, 0, 25)
 
-				sys.Name = "sys"
+				sys.Name = NeverZen:RandomString()
 				sys.Parent = Dropown
 				sys.AnchorPoint = Vector2.new(1, 0.5)
 				sys.BackgroundColor3 = Color3.fromRGB(32, 32, 32)
@@ -2571,7 +2606,7 @@ function NeverZen.new(config)
 				UICorner.CornerRadius = UDim.new(0, 4)
 				UICorner.Parent = sys
 
-				value.Name = "value"
+				value.Name = NeverZen:RandomString()
 				value.Parent = sys
 				value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				value.BackgroundTransparency = 1.000
@@ -2587,7 +2622,7 @@ function NeverZen.new(config)
 				UIStroke.Color = Color3.fromRGB(40, 40, 40)
 				UIStroke.Parent = sys
 
-				Label.Name = "Label"
+				Label.Name = NeverZen:RandomString()
 				Label.Parent = Dropown
 				Label.AnchorPoint = Vector2.new(0, 0.5)
 				Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2610,7 +2645,7 @@ function NeverZen.new(config)
 				local UIListLayout = Instance.new("UIListLayout")
 				local DropShadow = Instance.new("ImageLabel")
 
-				DropdownItems.Name = "DropdownItems"
+				DropdownItems.Name = NeverZen:RandomString()
 				DropdownItems.Parent = Content
 				DropdownItems.BackgroundColor3 = NeverZen.Theme.WindowBackgroundColor
 				DropdownItems.BackgroundTransparency = 0.050
@@ -2621,6 +2656,7 @@ function NeverZen.new(config)
 				DropdownItems.Size = UDim2.new(0, 165, 0, 0)
 				DropdownItems.ZIndex = 100
 				DropdownItems.Visible = false
+		
 				table.insert(WindowSignal.FrameMemory.WindowBackgroundColor , DropdownItems)
 
 				UICorner.CornerRadius = UDim.new(0, 4)
@@ -2629,7 +2665,7 @@ function NeverZen.new(config)
 				UIStroke.Color = Color3.fromRGB(32, 32, 32)
 				UIStroke.Parent = DropdownItems
 
-				Scroll.Name = "Scroll"
+				Scroll.Name = NeverZen:RandomString()
 				Scroll.Parent = DropdownItems
 				Scroll.Active = true
 				Scroll.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -2641,7 +2677,7 @@ function NeverZen.new(config)
 				Scroll.Position = UDim2.new(0.5, 0, 0.5, 0)
 				Scroll.Size = UDim2.new(1, -5, 1, -5)
 				Scroll.ZIndex = 101
-				Scroll.ScrollBarThickness = 1
+				Scroll.ScrollBarThickness = 0
 
 				UIListLayout.Parent = Scroll
 				UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -2649,10 +2685,10 @@ function NeverZen.new(config)
 				UIListLayout.Padding = UDim.new(0, 5)
 
 				UIListLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function(...: any) 
-					Scroll.CanvasSize = UDim2.fromOffset(0,UIListLayout.AbsoluteContentSize.Y + 1)
+					Scroll.CanvasSize = UDim2.fromOffset(0,UIListLayout.AbsoluteContentSize.Y + 2)
 				end)
 
-				DropShadow.Name = "DropShadow"
+				DropShadow.Name = NeverZen:RandomString()
 				DropShadow.Parent = DropdownItems
 				DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
 				DropShadow.BackgroundTransparency = 1.000
@@ -2720,7 +2756,7 @@ function NeverZen.new(config)
 					local UIStroke = Instance.new("UIStroke")
 					local UICorner = Instance.new("UICorner")
 
-					Selected.Name = "Selected"
+					Selected.Name = NeverZen:RandomString()
 					Selected.Parent = Scroll
 					Selected.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 					Selected.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2728,7 +2764,7 @@ function NeverZen.new(config)
 					Selected.Size = UDim2.new(1, 0, 0, 25)
 					Selected.ZIndex = 102
 
-					Icon.Name = "Icon"
+					Icon.Name = NeverZen:RandomString()
 					Icon.Parent = Selected
 					Icon.AnchorPoint = Vector2.new(0, 0.5)
 					Icon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2741,7 +2777,7 @@ function NeverZen.new(config)
 					Icon.ZIndex = 102
 					Icon.ImageTransparency = 0.500
 
-					Label.Name = "Label"
+					Label.Name = NeverZen:RandomString()
 					Label.Parent = Selected
 					Label.AnchorPoint = Vector2.new(0, 0.5)
 					Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -2840,6 +2876,10 @@ function NeverZen.new(config)
 						end;
 
 						NeverZen:NewInput(Selected,function()
+							if not Content.Enabled or not Content.Parent then
+								return;
+							end;
+							
 							if config.Multi then
 								config.Default[v] = not (config.Default[v] or table.find(config.Default,v));
 
@@ -2879,6 +2919,10 @@ function NeverZen.new(config)
 				DropdownItems:SetAttribute('OPENED',false)
 
 				upd.MouseButton1Click:Connect(function()
+					if not Content.Enabled or not Content.Parent then
+						return;
+					end;
+					
 					DropdownItems:SetAttribute('OPENED',true)
 
 					TweenService:Create(DropdownItems,TweenInfo.new(0.1),{
@@ -3127,7 +3171,7 @@ function NeverZen:CreateNotifier()
 
 	NeverZen.ProtectGui(Content)
 
-	Notification.Name = "Notification"
+	Notification.Name = NeverZen:RandomString()
 	Notification.Parent = Content
 	Notification.AnchorPoint = Vector2.new(1, 1)
 	Notification.BackgroundColor3 = NeverZen.Theme.WindowBackgroundColor
@@ -3152,7 +3196,7 @@ function NeverZen:CreateNotifier()
 			local Header = Instance.new("TextLabel")
 			local Body = Instance.new("TextLabel")
 
-			Notify.Name = "Notify"
+			Notify.Name = NeverZen:RandomString()
 			Notify.Parent = Notification
 			Notify.BackgroundColor3 = NeverZen.Theme.WindowBackgroundColor
 			Notify.BackgroundTransparency = 0.100
@@ -3167,7 +3211,7 @@ function NeverZen:CreateNotifier()
 			UIStroke.Color = Color3.fromRGB(32, 32, 32)
 			UIStroke.Parent = Notify
 
-			Header.Name = "Header"
+			Header.Name = NeverZen:RandomString()
 			Header.Parent = Notify
 			Header.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Header.BackgroundTransparency = 1.000
@@ -3182,7 +3226,7 @@ function NeverZen:CreateNotifier()
 			Header.TextTransparency = 0.100
 			Header.TextXAlignment = Enum.TextXAlignment.Left
 
-			Body.Name = "Body"
+			Body.Name = NeverZen:RandomString()
 			Body.Parent = Notify
 			Body.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			Body.BackgroundTransparency = 1.000
