@@ -18,7 +18,7 @@ export type Services = {
 };
 
 local NeverZen = {
-	Version = '1.1'	
+	Version = '1.2'	
 };
 
 NeverZen.Services = {
@@ -38,6 +38,7 @@ local Mouse = LocalPlayer:GetMouse();
 
 NeverZen.ProtectGui = protect_gui or protectgui or (syn and syn.protect_gui) or function() end;
 NeverZen.Services.CoreGui = (gethui and gethui()) or NeverZen.Services.CoreGui or LocalPlayer.PlayerGui;
+NeverZen.MininumTabSize = 600;
 
 local Services : Services = NeverZen.Services;
 
@@ -1083,7 +1084,7 @@ function NeverZen.new(config)
 		HeadText = {},
 		LineColor = {},
 	};
-	
+
 	local Content = Instance.new("ScreenGui")
 	local WindowFrame = Instance.new("Frame")
 	local UICorner = Instance.new("UICorner")
@@ -1132,10 +1133,10 @@ function NeverZen.new(config)
 	WindowFrame.Position = UDim2.new(0, 177, 0, 177)
 	WindowFrame.Size = UDim2.new(0,0,0,0)
 	WindowFrame.Active = true
-	
+
 	table.insert(WindowSignal.FrameMemory.WindowBackgroundColor , WindowFrame)
-	
-	
+
+
 	if config.Shadow then
 		local DropShadow = Instance.new("ImageLabel")
 
@@ -1219,7 +1220,7 @@ function NeverZen.new(config)
 	HeaderText.TextScaled = true
 	HeaderText.TextSize = 14.000
 	HeaderText.TextWrapped = true
-	
+
 	table.insert(WindowSignal.FrameMemory.HeadText , HeaderText)
 
 	task.delay(0.4,function()
@@ -1493,7 +1494,7 @@ function NeverZen.new(config)
 			Position = UDim2.new(0, 170, 0, 45)
 		}):Play()
 	end);
-	
+
 	function WindowSignal:StatusBar()
 
 		local Statusbar = Instance.new("Frame")
@@ -1513,7 +1514,7 @@ function NeverZen.new(config)
 		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
 		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 		UIListLayout.Padding = UDim.new(0, 3);
-		
+
 		return {
 			create = function(name)
 				local Frame = Instance.new("Frame")
@@ -1544,7 +1545,7 @@ function NeverZen.new(config)
 				Label.TextColor3 = Color3.fromRGB(255, 255, 255)
 				Label.TextSize = 14.000
 				Label.TextXAlignment = Enum.TextXAlignment.Left
-				
+
 				return {
 					Visible = function(self,a)
 						if a then
@@ -1553,7 +1554,7 @@ function NeverZen.new(config)
 							Frame.Visible = false
 						end
 					end,
-					
+
 					Text = function(self , name)
 						Label.Text = name or ""
 					end,
@@ -1579,13 +1580,13 @@ function NeverZen.new(config)
 		TBSTitle.TextSize = 14.000
 		TBSTitle.TextTransparency = 1
 		TBSTitle.TextXAlignment = Enum.TextXAlignment.Left
-		
+
 		task.delay(#WindowSignal.Tabs / 5,function()
 			TweenService:Create(TBSTitle,TweenInfo.new(0.45),{
 				TextTransparency = 0.75
 			}):Play()
 		end)
-		
+
 		table.insert(WindowSignal.Tabs,{TBSTitle});
 	end;
 
@@ -1642,14 +1643,16 @@ function NeverZen.new(config)
 		TabName.TextTransparency = 1
 		TabName.TextWrapped = true
 		TabName.TextXAlignment = Enum.TextXAlignment.Left
-		
-		
+
+
 		local TabFrame = Instance.new("Frame")
 		local LeftFrame = Instance.new("ScrollingFrame")
 		local UIListLayout = Instance.new("UIListLayout")
 		local RightFrame = Instance.new("ScrollingFrame")
 		local UIListLayout_2 = Instance.new("UIListLayout")
-
+		local CTFrame = Instance.new("ScrollingFrame")
+		local UIListLayoutAF = Instance.new("UIListLayout")
+		
 		TabFrame.Name = "TabFrame"
 		TabFrame.Parent = TabWin
 		TabFrame.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -1661,9 +1664,31 @@ function NeverZen.new(config)
 		TabFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 		TabFrame.Size = UDim2.new(1, -2, 1, -2)
 		TabFrame.ZIndex = 4
+		
+		CTFrame.Name = "CTFrame"
+		CTFrame.Parent = TabFrame
+		CTFrame.Active = true
+		CTFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+		CTFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		CTFrame.BackgroundTransparency = 1.000
+		CTFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		CTFrame.BorderSizePixel = 0
+		CTFrame.ClipsDescendants = false
+		CTFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+		CTFrame.Size = UDim2.new(1, -1, 1, -3)
+		CTFrame.CanvasSize = UDim2.new(0, 0, 0, 450)
+		CTFrame.ScrollBarThickness = 0
+		CTFrame.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Left
 
+		UIListLayoutAF.Parent = CTFrame
+		UIListLayoutAF.FillDirection = Enum.FillDirection.Horizontal
+		UIListLayoutAF.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		UIListLayoutAF.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayoutAF.Padding = UDim.new(0, 2)
+		
+		
 		LeftFrame.Name = "LeftFrame"
-		LeftFrame.Parent = TabFrame
+		LeftFrame.Parent = CTFrame
 		LeftFrame.Active = true
 		LeftFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 		LeftFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1673,7 +1698,7 @@ function NeverZen.new(config)
 		LeftFrame.ClipsDescendants = false
 		LeftFrame.Position = UDim2.new(0.25, 0, 0.5, 0)
 		LeftFrame.Size = UDim2.new(0.5, -5, 1, -3)
-		LeftFrame.ScrollBarThickness = 1
+		LeftFrame.ScrollBarThickness = 0
 		LeftFrame.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Left
 
 		UIListLayout.Parent = LeftFrame
@@ -1686,7 +1711,7 @@ function NeverZen.new(config)
 		end)
 
 		RightFrame.Name = "RightFrame"
-		RightFrame.Parent = TabFrame
+		RightFrame.Parent = CTFrame
 		RightFrame.Active = true
 		RightFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 		RightFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1696,7 +1721,7 @@ function NeverZen.new(config)
 		RightFrame.ClipsDescendants = false
 		RightFrame.Position = UDim2.new(0.75, 0, 0.5, 0)
 		RightFrame.Size = UDim2.new(0.5, -5, 1, -3)
-		RightFrame.ScrollBarThickness = 1
+		RightFrame.ScrollBarThickness = 0
 
 		UIListLayout_2.Parent = RightFrame
 		UIListLayout_2.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -1706,7 +1731,41 @@ function NeverZen.new(config)
 		UIListLayout_2:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
 			RightFrame.CanvasSize = UDim2.fromOffset(0,UIListLayout_2.AbsoluteContentSize.Y + 5)
 		end)
+		
+		task.spawn(function()
+			while true do task.wait(0.1)
+				if WindowFrame.Size.X.Offset <= NeverZen.MininumTabSize then
+					UIListLayoutAF.FillDirection = Enum.FillDirection.Vertical
+					UIListLayoutAF.HorizontalAlignment = Enum.HorizontalAlignment.Center
+					UIListLayoutAF.SortOrder = Enum.SortOrder.LayoutOrder
+					CTFrame.ScrollingEnabled = true
+					RightFrame.Size = UDim2.new(1,-5,0,UIListLayout_2.AbsoluteContentSize.Y + 2)
+					LeftFrame.Size = UDim2.new(1, -5, 0,UIListLayout.AbsoluteContentSize.Y + 3)
+					UIListLayoutAF.Padding = UDim.new(0, 2)
 
+					RightFrame.ScrollingEnabled = false
+					LeftFrame.ScrollingEnabled = false
+					RightFrame.CanvasPosition = Vector2.new(0,0)
+					LeftFrame.CanvasPosition = Vector2.new(0,0)
+					CTFrame.CanvasSize = UDim2.fromOffset(0,UIListLayoutAF.AbsoluteContentSize.Y)
+				else
+					CTFrame.CanvasSize = UDim2.fromOffset(0,0)
+					UIListLayoutAF.Padding = UDim.new(0, 5)
+
+					RightFrame.Size = UDim2.new(0.5, -5, 1, -3)
+					LeftFrame.Size = UDim2.new(0.5, -5, 1, -3)
+					CTFrame.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Left
+					UIListLayoutAF.FillDirection = Enum.FillDirection.Horizontal
+					UIListLayoutAF.HorizontalAlignment = Enum.HorizontalAlignment.Center
+					UIListLayoutAF.SortOrder = Enum.SortOrder.LayoutOrder
+					CTFrame.ScrollingEnabled = false
+					RightFrame.ScrollingEnabled = true
+					LeftFrame.ScrollingEnabled = true
+					CTFrame.CanvasPosition = Vector2.new(0,0)
+				end;
+			end;
+		end);
+		
 		local ToggleFunc = function(value)
 			if value then
 				TabFrame.Visible = true;
@@ -1776,14 +1835,14 @@ function NeverZen.new(config)
 			target = TabButton,
 			Search = searchItem,
 		};
-		
+
 
 		task.delay(#WindowSignal.Tabs / 8,function()
 			TweenService:Create(TabButton,TweenInfo.new(0.35),{
 				Size = UDim2.new(1, 0, 0, 35)
 			}):Play()
 		end)
-		
+
 		ToggleFunc(WindowSignal.SelectedTab == nil and true)
 
 		table.insert(WindowSignal.Tabs,TabIden);
@@ -2296,14 +2355,17 @@ function NeverZen.new(config)
 					Eight = '8',
 					Nine = '9',
 					Zero = '0',
-
 					['Minus'] = "-",
 					['Plus'] = "+",
 					BackSlash = "\\",
 					Slash = "/",
 					Period = '.',
 					Semicolon = ';',
-					Colon = ":"
+					Colon = ":",
+					LeftControl = "LCtrl",
+					RightControl = "RCtrl",
+					LeftShift = "LShift",
+					RightShift = "RShift",
 				};
 
 				local GetItem = function(item)
@@ -2560,7 +2622,7 @@ function NeverZen.new(config)
 				DropdownItems.ZIndex = 100
 				DropdownItems.Visible = false
 				table.insert(WindowSignal.FrameMemory.WindowBackgroundColor , DropdownItems)
-				
+
 				UICorner.CornerRadius = UDim.new(0, 4)
 				UICorner.Parent = DropdownItems
 
@@ -2879,32 +2941,32 @@ function NeverZen.new(config)
 			TweenService:Create(TabWin,TweenInfo.new(0.45,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Position = UDim2.new(1, 170, 0, 45)
 			}):Play()
-			
+
 			TweenService:Create(SearchFrame,TweenInfo.new(0.3,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Size = UDim2.new(0, 0, 0, 22)
 			}):Play()
-			
+
 			TweenService:Create(UIStroke_2,TweenInfo.new(0.3,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Transparency = 1
 			}):Play()
-			
+
 			TweenService:Create(SettingsButton,TweenInfo.new(0.3,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Size = UDim2.new(0, 0, 0, 0)
 			}):Play()
-	
+
 		else
 			TweenService:Create(SettingsButton,TweenInfo.new(1,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Size = UDim2.new(0.899999976, 0, 0.899999976, 0)
 			}):Play()
-			
+
 			TweenService:Create(UIStroke_2,TweenInfo.new(0.3,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Transparency = 0
 			}):Play()
-			
+
 			TweenService:Create(SearchFrame,TweenInfo.new(1,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Size = UDim2.new(0, 140, 0, 22)
 			}):Play()
-			
+
 			TweenService:Create(InformationFrame,TweenInfo.new(0.8,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Position = UDim2.new(0, 0, 1, 0)
 			}):Play()
