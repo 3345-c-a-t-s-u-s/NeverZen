@@ -28,10 +28,10 @@ NeverZen.Services = {
 	CoreGui = cloneref(game:FindFirstChild('CoreGui')),
 };
 
-local TextService = game:GetService('TextService');
-local TweenService = game:GetService('TweenService');
+local TextService = cloneref(game:GetService('TextService'));
+local TweenService = cloneref(game:GetService('TweenService'));
 local CurrentCamera = workspace.CurrentCamera;
-local RunService = game:GetService('RunService');
+local RunService = cloneref(game:GetService('RunService'));
 
 local LocalPlayer : Player = NeverZen.Services.Players.LocalPlayer;
 local Mouse = LocalPlayer:GetMouse();
@@ -62,7 +62,7 @@ function NeverZen:Hook()
 		hooking(game:GetService('ContentProvider').Preload,function()
 			return 2;
 		end);
-		
+
 		hooking(game:GetService('ContentProvider').GetAssetFetchStatus,function()
 			return 3;
 		end);
@@ -919,7 +919,7 @@ end;
 
 function NeverZen:SetBlur(frame : Frame,NoAutoBackground)
 	local Part = Instance.new('Part',workspace.Camera);
-	local DepthOfField = Instance.new('DepthOfFieldEffect',game:GetService('Lighting'));
+	local DepthOfField = Instance.new('DepthOfFieldEffect',cloneref(game:GetService('Lighting')));
 	local SurfaceGui = Instance.new('SurfaceGui',Part);
 	local BlockMesh = Instance.new("BlockMesh");
 
@@ -1055,6 +1055,14 @@ function NeverZen:Rounding(num, numDecimalPlaces) : number
 	return math.floor(num * mult + 0.5) / mult
 end;
 
+
+NeverZen.Theme = {
+	WindowBackgroundColor = Color3.fromRGB(12, 12, 12),
+	HeadText = Color3.fromRGB(209, 209, 209),
+	LineColor = Color3.fromRGB(35, 35, 35),
+}
+
+
 function NeverZen.new(config)
 	config = config or {};
 
@@ -1070,7 +1078,12 @@ function NeverZen.new(config)
 	WindowSignal.Tabs = {};
 	WindowSignal.Config = config;
 	WindowSignal.Toggle = true;
-
+	WindowSignal.FrameMemory = {
+		WindowBackgroundColor = {},
+		HeadText = {},
+		LineColor = {},
+	};
+	
 	local Content = Instance.new("ScreenGui")
 	local WindowFrame = Instance.new("Frame")
 	local UICorner = Instance.new("UICorner")
@@ -1111,7 +1124,7 @@ function NeverZen.new(config)
 
 	WindowFrame.Name = NeverZen:RandomString()
 	WindowFrame.Parent = Content
-	WindowFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+	WindowFrame.BackgroundColor3 = NeverZen.Theme.WindowBackgroundColor
 	WindowFrame.BackgroundTransparency = 0.1
 	WindowFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	WindowFrame.BorderSizePixel = 0
@@ -1119,7 +1132,10 @@ function NeverZen.new(config)
 	WindowFrame.Position = UDim2.new(0, 177, 0, 177)
 	WindowFrame.Size = UDim2.new(0,0,0,0)
 	WindowFrame.Active = true
-
+	
+	table.insert(WindowSignal.FrameMemory.WindowBackgroundColor , WindowFrame)
+	
+	
 	if config.Shadow then
 		local DropShadow = Instance.new("ImageLabel")
 
@@ -1203,6 +1219,8 @@ function NeverZen.new(config)
 	HeaderText.TextScaled = true
 	HeaderText.TextSize = 14.000
 	HeaderText.TextWrapped = true
+	
+	table.insert(WindowSignal.FrameMemory.HeadText , HeaderText)
 
 	task.delay(0.4,function()
 		TweenService:Create(HeaderText,TweenInfo.new(1,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
@@ -1213,7 +1231,7 @@ function NeverZen.new(config)
 	Line.Name = NeverZen:RandomString()
 	Line.Parent = Header
 	Line.AnchorPoint = Vector2.new(0, 1)
-	Line.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	Line.BackgroundColor3 =NeverZen.Theme.LineColor
 	Line.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Line.BorderSizePixel = 0
 	Line.Position = UDim2.new(0, 170, 1, 0)
@@ -1322,7 +1340,7 @@ function NeverZen.new(config)
 
 	Line_2.Name = NeverZen:RandomString()
 	Line_2.Parent = WindowFrame
-	Line_2.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	Line_2.BackgroundColor3 =NeverZen.Theme.LineColor
 	Line_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Line_2.BorderSizePixel = 0
 	Line_2.Position = UDim2.new(0, 170, 0, 0)
@@ -1382,7 +1400,7 @@ function NeverZen.new(config)
 	UICorner_3.Parent = ProfileIcon
 
 	UIStroke_3.Thickness = 2.000
-	UIStroke_3.Color = Color3.fromRGB(35, 35, 35)
+	UIStroke_3.Color =NeverZen.Theme.LineColor
 	UIStroke_3.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 	UIStroke_3.Parent = ProfileIcon
 
@@ -1454,7 +1472,7 @@ function NeverZen.new(config)
 	Line_3.Name = NeverZen:RandomString()
 	Line_3.Parent = BthFrames
 	Line_3.AnchorPoint = Vector2.new(0, 1)
-	Line_3.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	Line_3.BackgroundColor3 =NeverZen.Theme.LineColor
 	Line_3.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Line_3.BorderSizePixel = 0
 	Line_3.Position = UDim2.new(0, 0, 1, -45)
@@ -1474,7 +1492,75 @@ function NeverZen.new(config)
 		TweenService:Create(TabWin,TweenInfo.new(0.8,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 			Position = UDim2.new(0, 170, 0, 45)
 		}):Play()
-	end)
+	end);
+	
+	function WindowSignal:StatusBar()
+
+		local Statusbar = Instance.new("Frame")
+		local UIListLayout = Instance.new("UIListLayout")
+
+		Statusbar.Name = "Statusbar";
+		Statusbar.Parent = NeverZen;
+		Statusbar.AnchorPoint = Vector2.new(1, 0)
+		Statusbar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Statusbar.BackgroundTransparency = 1.000
+		Statusbar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+		Statusbar.BorderSizePixel = 0
+		Statusbar.Position = UDim2.new(1, -5, 0, 5)
+		Statusbar.Size = UDim2.new(0, 150, 0, 1)
+
+		UIListLayout.Parent = Statusbar
+		UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+		UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+		UIListLayout.Padding = UDim.new(0, 3);
+		
+		return {
+			create = function(name)
+				local Frame = Instance.new("Frame")
+				local UICorner = Instance.new("UICorner")
+				local Label = Instance.new("TextLabel")
+
+				Frame.Parent = Statusbar
+				Frame.BackgroundColor3 = NeverZen.Theme.WindowBackgroundColor
+				Frame.BackgroundTransparency = 0.100
+				Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Frame.BorderSizePixel = 0
+				Frame.Size = UDim2.new(0, 250, 0, 20)
+
+				UICorner.CornerRadius = UDim.new(0, 4)
+				UICorner.Parent = Frame
+
+				Label.Name = "Label"
+				Label.Parent = Frame
+				Label.AnchorPoint = Vector2.new(0.5, 0.5)
+				Label.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Label.BackgroundTransparency = 1.000
+				Label.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Label.BorderSizePixel = 0
+				Label.Position = UDim2.new(0.5, 0, 0.5, 0)
+				Label.Size = UDim2.new(1, -10, 0.699999988, 0)
+				Label.Font = Enum.Font.GothamMedium
+				Label.Text = name or ""
+				Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+				Label.TextSize = 14.000
+				Label.TextXAlignment = Enum.TextXAlignment.Left
+				
+				return {
+					Visible = function(self,a)
+						if a then
+							Frame.Visible = true
+						else
+							Frame.Visible = false
+						end
+					end,
+					
+					Text = function(self , name)
+						Label.Text = name or ""
+					end,
+				}
+			end,
+		};
+	end;
 
 	function WindowSignal:AddLabel(name)
 		local TBSTitle = Instance.new("TextLabel")
@@ -1491,8 +1577,16 @@ function NeverZen.new(config)
 		TBSTitle.Text = name
 		TBSTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
 		TBSTitle.TextSize = 14.000
-		TBSTitle.TextTransparency = 0.75
+		TBSTitle.TextTransparency = 1
 		TBSTitle.TextXAlignment = Enum.TextXAlignment.Left
+		
+		task.delay(#WindowSignal.Tabs / 5,function()
+			TweenService:Create(TBSTitle,TweenInfo.new(0.45),{
+				TextTransparency = 0.75
+			}):Play()
+		end)
+		
+		table.insert(WindowSignal.Tabs,{TBSTitle});
 	end;
 
 	function WindowSignal:AddTab(config)
@@ -1511,7 +1605,7 @@ function NeverZen.new(config)
 		TabButton.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 		TabButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		TabButton.BorderSizePixel = 0
-		TabButton.Size = UDim2.new(1, 0, 0, 35)
+		TabButton.Size = UDim2.new(0, 0, 0, 35)
 		TabButton.ZIndex = 5
 
 		UICorner.CornerRadius = UDim.new(0, 4)
@@ -1528,7 +1622,7 @@ function NeverZen.new(config)
 		TabIcon.Size = UDim2.new(0, 20, 0, 20)
 		TabIcon.ZIndex = 5
 		TabIcon.Image = NeverZen:GetIcon(config.Icon);
-		TabIcon.ImageTransparency = 0.500
+		TabIcon.ImageTransparency = 1
 
 		TabName.Name = "TabName"
 		TabName.Parent = TabButton
@@ -1545,10 +1639,11 @@ function NeverZen.new(config)
 		TabName.TextColor3 = Color3.fromRGB(255, 255, 255)
 		TabName.TextScaled = true
 		TabName.TextSize = 14.000
-		TabName.TextTransparency = 0.200
+		TabName.TextTransparency = 1
 		TabName.TextWrapped = true
 		TabName.TextXAlignment = Enum.TextXAlignment.Left
-
+		
+		
 		local TabFrame = Instance.new("Frame")
 		local LeftFrame = Instance.new("ScrollingFrame")
 		local UIListLayout = Instance.new("UIListLayout")
@@ -1681,7 +1776,14 @@ function NeverZen.new(config)
 			target = TabButton,
 			Search = searchItem,
 		};
+		
 
+		task.delay(#WindowSignal.Tabs / 8,function()
+			TweenService:Create(TabButton,TweenInfo.new(0.35),{
+				Size = UDim2.new(1, 0, 0, 35)
+			}):Play()
+		end)
+		
 		ToggleFunc(WindowSignal.SelectedTab == nil and true)
 
 		table.insert(WindowSignal.Tabs,TabIden);
@@ -1699,7 +1801,9 @@ function NeverZen.new(config)
 				if v.target == TabButton then
 					ToggleFunc(true)
 				else
-					v.call(false)
+					if v.call then
+						v.call(false)
+					end
 				end;
 			end;
 		end);
@@ -1977,7 +2081,7 @@ function NeverZen.new(config)
 				end)
 
 				button.MouseEnter:Connect(function()
-					Button.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+					Button.BackgroundColor3 =NeverZen.Theme.LineColor
 				end)
 
 				button.MouseLeave:Connect(function()
@@ -2446,7 +2550,7 @@ function NeverZen.new(config)
 
 				DropdownItems.Name = "DropdownItems"
 				DropdownItems.Parent = Content
-				DropdownItems.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+				DropdownItems.BackgroundColor3 = NeverZen.Theme.WindowBackgroundColor
 				DropdownItems.BackgroundTransparency = 0.050
 				DropdownItems.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				DropdownItems.BorderSizePixel = 0
@@ -2455,7 +2559,8 @@ function NeverZen.new(config)
 				DropdownItems.Size = UDim2.new(0, 165, 0, 0)
 				DropdownItems.ZIndex = 100
 				DropdownItems.Visible = false
-
+				table.insert(WindowSignal.FrameMemory.WindowBackgroundColor , DropdownItems)
+				
 				UICorner.CornerRadius = UDim.new(0, 4)
 				UICorner.Parent = DropdownItems
 
@@ -2760,11 +2865,8 @@ function NeverZen.new(config)
 
 		if not v then
 			TweenService:Create(WindowFrame,TweenInfo.new(0.7,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
-				Size = UDim2.fromOffset(210,45)
+				Size = UDim2.fromOffset(210,44)
 			}):Play()
-
-			SettingsButton.Visible = false;
-			SearchFrame.Visible = false;
 
 			TweenService:Create(BthFrames,TweenInfo.new(0.5,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Position = UDim2.new(-1, 0, 0, 45)
@@ -2777,10 +2879,32 @@ function NeverZen.new(config)
 			TweenService:Create(TabWin,TweenInfo.new(0.45,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Position = UDim2.new(1, 170, 0, 45)
 			}):Play()
+			
+			TweenService:Create(SearchFrame,TweenInfo.new(0.3,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
+				Size = UDim2.new(0, 0, 0, 22)
+			}):Play()
+			
+			TweenService:Create(UIStroke_2,TweenInfo.new(0.3,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
+				Transparency = 1
+			}):Play()
+			
+			TweenService:Create(SettingsButton,TweenInfo.new(0.3,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
+				Size = UDim2.new(0, 0, 0, 0)
+			}):Play()
+	
 		else
-			SettingsButton.Visible = true;
-			SearchFrame.Visible = true;
-
+			TweenService:Create(SettingsButton,TweenInfo.new(1,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
+				Size = UDim2.new(0.899999976, 0, 0.899999976, 0)
+			}):Play()
+			
+			TweenService:Create(UIStroke_2,TweenInfo.new(0.3,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
+				Transparency = 0
+			}):Play()
+			
+			TweenService:Create(SearchFrame,TweenInfo.new(1,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
+				Size = UDim2.new(0, 140, 0, 22)
+			}):Play()
+			
 			TweenService:Create(InformationFrame,TweenInfo.new(0.8,Enum.EasingStyle.Quint,Enum.EasingDirection.InOut),{
 				Position = UDim2.new(0, 0, 1, 0)
 			}):Play()
@@ -2900,7 +3024,7 @@ function NeverZen.new(config)
 		local delta = input.Position - dragStart
 		local position = UDim2.new(startPos.X.Scale, math.max(startPos.X.Offset + delta.X , -10),
 			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-		
+
 		game:GetService('TweenService'):Create(WindowFrame, TweenInfo.new(dragSpeed), {Position = position}):Play()
 	end
 
@@ -2944,7 +3068,7 @@ function NeverZen:CreateNotifier()
 	Notification.Name = "Notification"
 	Notification.Parent = Content
 	Notification.AnchorPoint = Vector2.new(1, 1)
-	Notification.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+	Notification.BackgroundColor3 = NeverZen.Theme.WindowBackgroundColor
 	Notification.BackgroundTransparency = 1.000
 	Notification.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Notification.BorderSizePixel = 0
@@ -2968,7 +3092,7 @@ function NeverZen:CreateNotifier()
 
 			Notify.Name = "Notify"
 			Notify.Parent = Notification
-			Notify.BackgroundColor3 = Color3.fromRGB(12, 12, 12)
+			Notify.BackgroundColor3 = NeverZen.Theme.WindowBackgroundColor
 			Notify.BackgroundTransparency = 0.100
 			Notify.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			Notify.BorderSizePixel = 0
