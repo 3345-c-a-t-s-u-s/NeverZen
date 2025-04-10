@@ -1136,6 +1136,19 @@ function NeverZen:SetTheme(name)
 			BackgroundColor2 = Color3.fromRGB(43,48,55),
 			IconColor = Color3.fromRGB(220,221,222),
 		};
+	elseif name == "Airflow" then
+		NeverZen.Theme = {
+			WindowBackgroundColor = Color3.fromRGB(41,40,38),
+			HeadText = Color3.fromRGB(229,229,228),
+			LineColor = Color3.fromRGB(49,49,48),
+			BackgroundColor = Color3.fromRGB(69,66,63),
+			SectionColor = Color3.fromRGB(42,41,40),
+			Hightlight = Color3.fromRGB(143,107,190),
+			StrokeColor = Color3.fromRGB(49,49,48),
+			StrokeColor2 = Color3.fromRGB(36, 36, 35),
+			BackgroundColor2 = Color3.fromRGB(46,46,44),
+			IconColor = Color3.fromRGB(143,107,190),
+		};
 	end;
 end;
 
@@ -1358,7 +1371,7 @@ function NeverZen.new(config)
 	SearchButton.Image = "rbxassetid://10734943674"
 	SearchButton.ImageTransparency = 0.200
 
-	UIStroke_2.Color = Color3.fromRGB(24, 24, 24)
+	UIStroke_2.Color = NeverZen.Theme.LineColor;
 	UIStroke_2.Parent = SearchFrame
 
 	UICorner_2.CornerRadius = UDim.new(0, 4)
@@ -1701,7 +1714,7 @@ function NeverZen.new(config)
 		TabIcon.Image = NeverZen:GetIcon(config.Icon);
 		TabIcon.ImageTransparency = 1
 		TabIcon.ImageColor3 = NeverZen.Theme.IconColor
-		
+
 		TabName.Name = NeverZen:RandomString()
 		TabName.Parent = TabButton
 		TabName.AnchorPoint = Vector2.new(0, 0.5)
@@ -2392,19 +2405,19 @@ function NeverZen.new(config)
 				UICorner_4.Parent = move
 
 				local IsHold = false;
-				
+
 				local updateSIZE = function()
 					local test = "2."..string.rep("4",(config.Round or 0) + 1)..tostring(config.Type);
-					
+
 					local scale = TextService:GetTextSize(test,LabelValue.TextSize,LabelValue.Font,Vector2.new(math.huge,math.huge));
 					local scalelab = TextService:GetTextSize(Label.Text,Label.TextSize,Label.Font,Vector2.new(math.huge,math.huge));
 
 					con.Position = UDim2.new(1, -(scale.X + 11), 0.5, 0)
 					con.Size = UDim2.new(1, -(scalelab.X + 55), 0.200000003, 0)
 				end;
-				
+
 				updateSIZE()
-				
+
 				local function update(Input)
 					local SizeScale = math.clamp((((Input.Position.X) - con.AbsolutePosition.X) / con.AbsoluteSize.X), 0, 1);
 					local Main = ((config.Max - config.Min) * SizeScale) + config.Min;
@@ -2417,11 +2430,11 @@ function NeverZen.new(config)
 					}):Play();
 
 					LabelValue.Text = tostring(Value)..tostring(config.Type)
-					
+
 					local scale = TextService:GetTextSize(LabelValue.Text,LabelValue.TextSize,LabelValue.Font,Vector2.new(math.huge,math.huge));
 					value.Size = UDim2.new(0, scale.X + 5, 0, 15)
 					updateSIZE()
-					
+
 					config.Callback(Value,config)
 				end;
 
@@ -3337,7 +3350,7 @@ function NeverZen:CreateNotifier()
 			Body.TextTransparency = 0.500
 			Body.TextXAlignment = Enum.TextXAlignment.Left
 			Body.TextYAlignment = Enum.TextYAlignment.Top
-			
+
 			local Min = TextService:GetTextSize(Header.Text,Header.TextSize,Header.Font,Vector2.new(math.huge,math.huge));
 			local scale = TextService:GetTextSize(Body.Text,Body.TextSize,Body.Font,Vector2.new(math.huge,math.huge));
 
